@@ -36,6 +36,9 @@ public class Usuario {
 	@Column(nullable = false)
 	private LocalDateTime dataCadastro;
 	
+	@Deprecated
+	public Usuario() {
+	}
 	
 	public Usuario(@Email @NotBlank @NotNull String login, @NotBlank @NotNull @Size(min = 6) SenhaSemHash senha) {
 		this.login = login;
