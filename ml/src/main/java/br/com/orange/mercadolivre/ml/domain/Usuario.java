@@ -45,6 +45,14 @@ public class Usuario {
 		this.senha = senha.encode();
 		this.dataCadastro = LocalDateTime.now();
 	}
+
+	public String getLogin() {
+		return login;
+	}
+
+	public String getSenha() {
+		return senha;
+	}
 	
 	
 	
