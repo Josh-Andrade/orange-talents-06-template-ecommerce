@@ -17,13 +17,16 @@ public class UsuarioAutenticado implements UserDetails {
 
 	private static final long serialVersionUID = 1L;
 
-	@SuppressWarnings("unused")
 	private Usuario usuario;
 	private User userDetails;
 
 	public UsuarioAutenticado(@NotNull @Valid Usuario usuario) {
 		this.usuario = usuario;
 		this.userDetails = new User(usuario.getLogin(), usuario.getSenha(), List.of());
+	}
+
+	public Usuario getUsuario() {
+		return usuario;
 	}
 
 	@Override

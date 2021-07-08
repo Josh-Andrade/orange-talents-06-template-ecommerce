@@ -34,4 +34,14 @@ public class NotValidExceptionHandler {
 	public String getMessage(FieldError field) {
 		return messageSource.getMessage(field, LocaleContextHolder.getLocale());
 	}
+	
+	@ResponseStatus(code = HttpStatus.BAD_REQUEST)
+	@ExceptionHandler(IllegalArgumentException.class)
+	public List<ErrorResponse> handlerIllegal(IllegalArgumentException illegalArgumentException) {
+		String message = illegalArgumentException.getMessage();
+		List<ErrorResponse> errorDto = new ArrayList<>();
+		ErrorResponse errorResponse = new ErrorResponse(message, "");
+		errorDto.add(errorResponse);
+		return errorDto;
+	}
 }
