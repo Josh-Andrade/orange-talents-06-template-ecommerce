@@ -19,6 +19,7 @@ import br.com.orange.mercadolivre.ml.domain.Pergunta;
 import br.com.orange.mercadolivre.ml.domain.Produto;
 import br.com.orange.mercadolivre.ml.repository.PerguntaRepository;
 import br.com.orange.mercadolivre.ml.repository.ProdutoRepository;
+import br.com.orange.mercadolivre.ml.repository.UsuarioRepository;
 import br.com.orange.mercadolivre.ml.shared.EmailManager;
 
 @RestController
@@ -31,11 +32,14 @@ public class AdicionaPerguntaProdutoController {
 
 	private EmailManager emailManager;
 
+	private UsuarioRepository usuarioRepository;
+
 	public AdicionaPerguntaProdutoController(ProdutoRepository produtoRepository, PerguntaRepository perguntaRepository,
-			EmailManager emailManager) {
+			EmailManager emailManager, UsuarioRepository usuarioRepository) {
 		this.produtoRepository = produtoRepository;
 		this.perguntaRepository = perguntaRepository;
 		this.emailManager = emailManager;
+		this.usuarioRepository = usuarioRepository;
 	}
 
 	@PostMapping("/{id}")
@@ -44,13 +48,13 @@ public class AdicionaPerguntaProdutoController {
 			@AuthenticationPrincipal UsuarioAutenticado usuarioAutenticado) {
 
 		Optional<Produto> optionalProduto = produtoRepository.findById(idProduto);
-		Assert.isTrue(!optionalProduto.isEmpty(), "Produto Não Encontrado");
+		Assert.isTrue(optionalProduto.isPresent(), "Produto Não Encontrado");
 
 		Pergunta pergunta = novaPerguntaProdutoRequest.toEntity(optionalProduto.get(), usuarioAutenticado.getUsuario());
 
 		perguntaRepository.save(pergunta);
 
-		emailManager.EnviarEmailParaVendedor(pergunta.toResponse(usuarioAutenticado.getUsuario().getLogin()));
+		emailManager.EnviarEmailParaVendedor(pergunta.toResponse(usuarioRepository.findEmailById(optionalProduto.get().getUsuario().getId())));
 
 		return ResponseEntity.ok().build();
 	}

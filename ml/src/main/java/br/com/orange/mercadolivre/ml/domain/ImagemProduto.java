@@ -17,20 +17,20 @@ public class ImagemProduto {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
-	@NotNull 
+
+	@NotNull
 	@Valid
 	@ManyToOne
 	private Produto produto;
-	
+
 	@URL
 	@NotBlank
 	private String link;
-	
+
 	@Deprecated
 	public ImagemProduto() {
 	}
-	
+
 	public ImagemProduto(@NotNull @Valid Produto produto, @URL @NotBlank String link) {
 		this.produto = produto;
 		this.link = link;
@@ -60,6 +60,9 @@ public class ImagemProduto {
 			return false;
 		return true;
 	}
-	
-	
+
+	public String getLink() {
+		return link;
+	}
+
 }

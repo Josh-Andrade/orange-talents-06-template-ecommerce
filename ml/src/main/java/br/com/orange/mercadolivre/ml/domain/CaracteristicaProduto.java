@@ -15,15 +15,15 @@ public class CaracteristicaProduto {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
+
 	@NotBlank
 	@Column(nullable = false)
 	private String nome;
-	
+
 	@NotBlank
 	@Column(nullable = false)
 	private String descricao;
-	
+
 	@ManyToOne
 	@NotNull
 	private Produto produto;
@@ -31,7 +31,7 @@ public class CaracteristicaProduto {
 	@Deprecated
 	public CaracteristicaProduto() {
 	}
-	
+
 	public CaracteristicaProduto(@NotBlank String nome, @NotBlank String descricao, Produto produto) {
 		this.nome = nome;
 		this.descricao = descricao;
@@ -69,7 +69,12 @@ public class CaracteristicaProduto {
 		return true;
 	}
 
-	
-	
-	
+	public String getNome() {
+		return nome;
+	}
+
+	public String getDescricao() {
+		return descricao;
+	}
+
 }

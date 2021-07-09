@@ -32,4 +32,12 @@ public class Categoria {
 		this.categoria = categoria;
 	}
 
+	public String getNome() {
+		return nome;
+	}
+
+	public Categoria getCategoria() {
+		return categoria;
+	}
+
 }

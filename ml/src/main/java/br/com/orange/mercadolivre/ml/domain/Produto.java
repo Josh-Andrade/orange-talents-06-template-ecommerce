@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -23,6 +24,11 @@ import javax.validation.constraints.Size;
 import org.springframework.util.Assert;
 
 import br.com.orange.mercadolivre.ml.controller.request.NovaCaracteristicaProdutoRequest;
+import br.com.orange.mercadolivre.ml.controller.response.CaracteristicasDetalheResponse;
+import br.com.orange.mercadolivre.ml.controller.response.CategoriaDetalheResponse;
+import br.com.orange.mercadolivre.ml.controller.response.ImagensDetalheResponse;
+import br.com.orange.mercadolivre.ml.controller.response.OpinioesDetalheResponse;
+import br.com.orange.mercadolivre.ml.controller.response.PerguntasDetalheResponse;
 
 @Entity
 public class Produto {
@@ -65,16 +71,16 @@ public class Produto {
 	@NotNull
 	@ManyToOne
 	private Usuario usuario;
-	
+
 	@OneToMany(mappedBy = "produto", cascade = CascadeType.MERGE)
 	private Set<ImagemProduto> imagens = new HashSet<>();
 
 	@OneToMany(mappedBy = "produto", cascade = CascadeType.MERGE)
 	private List<OpiniaoProduto> opinioes = new ArrayList<>();
-	
+
 	@OneToMany(mappedBy = "produto", cascade = CascadeType.MERGE)
 	private List<Pergunta> perguntas = new ArrayList<>();
-	
+
 	@Deprecated
 	public Produto() {
 	}
@@ -99,13 +105,67 @@ public class Produto {
 	}
 
 	public void associarImagens(Set<String> links) {
-		Set<ImagemProduto> imagens = links.stream().map(link -> new ImagemProduto(this, link)).collect(Collectors.toSet());
+		Set<ImagemProduto> imagens = links.stream().map(link -> new ImagemProduto(this, link))
+				.collect(Collectors.toSet());
 		this.imagens.addAll(imagens);
 	}
 
 	public String getNome() {
 		return nome;
 	}
+
+	public Usuario getUsuario() {
+		return usuario;
+	}
+
+	public String getDescricao() {
+		return descricao;
+	}
+
+	public Double getValor() {
+		return valor;
+	}
+
+	public Double getMediaNotas() {
+		Double nota = 0.0;
+		for (OpiniaoProduto opiniao : opinioes) {
+			nota += opiniao.getNota();
+		}
+		return nota / getTotalNotas();
+	}
+
+	public Integer getTotalNotas() {
+		return opinioes.size();
+	}
+
+	public List<CaracteristicasDetalheResponse> getDetalheCaracteristicas() {
+		return caracteristicas.stream().map(c -> new CaracteristicasDetalheResponse(c.getNome(), c.getDescricao()))
+				.collect(Collectors.toList());
+	}
+
+	public List<OpinioesDetalheResponse> getDetalheOpinioes() {
+		return opinioes.stream().map(o -> new OpinioesDetalheResponse(o.getNota(), o.getTitulo(), o.getDescricao()))
+				.collect(Collectors.toList());
+	}
+
+	public List<PerguntasDetalheResponse> getDetalhePerguntas() {
+		return perguntas.stream().map(p -> new PerguntasDetalheResponse(p.getTitulo())).collect(Collectors.toList());
+	}
+
+	public List<ImagensDetalheResponse> getDetalheImagens() {
+		return imagens.stream().map(i -> new ImagensDetalheResponse(i.getLink())).collect(Collectors.toList());
+	}
+
+	public CategoriaDetalheResponse getDetalheCategorias() {
+		return carregarCategoriasMae(categoria);
+	}
 	
-	
+	private CategoriaDetalheResponse carregarCategoriasMae(Categoria categoria) {
+		if(Objects.isNull(categoria)) {
+			return null;
+		}
+		CategoriaDetalheResponse categoriaDetalhe = new CategoriaDetalheResponse(categoria.getNome());
+		categoriaDetalhe.setCategoriaMae(carregarCategoriasMae(categoria.getCategoria()));
+		return categoriaDetalhe;
+	}
 }

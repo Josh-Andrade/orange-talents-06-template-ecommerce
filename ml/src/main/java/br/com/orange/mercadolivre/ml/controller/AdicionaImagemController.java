@@ -38,9 +38,9 @@ public class AdicionaImagemController {
 			@AuthenticationPrincipal UsuarioAutenticado usuarioAutenticado) {
 		
 		Optional<Produto> produto = buscarUsuario(idProduto, usuarioAutenticado);
-		if (!produto.isPresent()) {
+		if (produto.isEmpty()) {
 			return ResponseEntity.status(HttpStatus.FORBIDDEN)
-					.body("O produto informado não percebe ao usuário logado");
+					.body("O produto informado não pertence ao usuário logado");
 		}
 
 		Set<String> links = uploaderFake.envia(adicionaImagemRequest.getImagens());

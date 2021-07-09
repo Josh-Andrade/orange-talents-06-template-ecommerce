@@ -40,7 +40,7 @@ public class AdicionaOpiniaoProdutoController {
 			@AuthenticationPrincipal UsuarioAutenticado usuarioAutenticado) {
 
 		Optional<Produto> optionalProduto = produtoRepository.findById(idProduto);
-		Assert.isTrue(!optionalProduto.isEmpty(), "Produto Não Encontrado");
+		Assert.isTrue(optionalProduto.isPresent(), "Produto Não Encontrado");
 
 		OpiniaoProduto opiniao = novaOpinaoProdutoRequest.toEntity(usuarioAutenticado.getUsuario(), optionalProduto.get());
 

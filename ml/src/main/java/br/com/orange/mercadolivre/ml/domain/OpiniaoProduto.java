@@ -24,7 +24,7 @@ public class OpiniaoProduto {
 	@Min(value = 1)
 	@Max(value = 5)
 	private Integer nota;
-	
+
 	@NotBlank
 	private String titulo;
 
@@ -57,6 +57,16 @@ public class OpiniaoProduto {
 		this.usuario = usuario;
 	}
 
+	public Integer getNota() {
+		return nota;
+	}
 
+	public String getTitulo() {
+		return titulo;
+	}
+
+	public String getDescricao() {
+		return descricao;
+	}
 
 }
