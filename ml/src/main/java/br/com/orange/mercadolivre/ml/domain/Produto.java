@@ -1,7 +1,10 @@
 package br.com.orange.mercadolivre.ml.domain;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -67,6 +70,9 @@ public class Produto {
 	@OneToMany(mappedBy = "produto", cascade = CascadeType.MERGE)
 	private Set<ImagemProduto> imagens = new HashSet<>();
 
+	@OneToMany(mappedBy = "produto", cascade = CascadeType.MERGE)
+	private List<OpiniaoProduto> opinioes = new ArrayList<>();
+	
 	@Deprecated
 	public Produto() {
 	}
@@ -93,6 +99,11 @@ public class Produto {
 	public void associarImagens(Set<String> links) {
 		Set<ImagemProduto> imagens = links.stream().map(link -> new ImagemProduto(this, link)).collect(Collectors.toSet());
 		this.imagens.addAll(imagens);
+	}
+
+	public void associarOpiniao(OpiniaoProduto opiniao) {
+		Assert.isTrue(!Objects.isNull(opiniao), "Deu algum problema e a opinião está nula");
+		this.opinioes.add(opiniao);
 	}
 	
 }
