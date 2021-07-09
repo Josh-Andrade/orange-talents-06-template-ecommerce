@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -73,6 +72,9 @@ public class Produto {
 	@OneToMany(mappedBy = "produto", cascade = CascadeType.MERGE)
 	private List<OpiniaoProduto> opinioes = new ArrayList<>();
 	
+	@OneToMany(mappedBy = "produto", cascade = CascadeType.MERGE)
+	private List<Pergunta> perguntas = new ArrayList<>();
+	
 	@Deprecated
 	public Produto() {
 	}
@@ -101,9 +103,9 @@ public class Produto {
 		this.imagens.addAll(imagens);
 	}
 
-	public void associarOpiniao(OpiniaoProduto opiniao) {
-		Assert.isTrue(!Objects.isNull(opiniao), "Deu algum problema e a opinião está nula");
-		this.opinioes.add(opiniao);
+	public String getNome() {
+		return nome;
 	}
+	
 	
 }

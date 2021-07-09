@@ -14,38 +14,45 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.orange.mercadolivre.ml.config.security.UsuarioAutenticado;
-import br.com.orange.mercadolivre.ml.controller.request.NovaOpiniaoProdutoRequest;
-import br.com.orange.mercadolivre.ml.domain.OpiniaoProduto;
+import br.com.orange.mercadolivre.ml.controller.request.NovaPerguntaProdutoRequest;
+import br.com.orange.mercadolivre.ml.domain.Pergunta;
 import br.com.orange.mercadolivre.ml.domain.Produto;
-import br.com.orange.mercadolivre.ml.repository.OpiniaoProdutoRepository;
+import br.com.orange.mercadolivre.ml.repository.PerguntaRepository;
 import br.com.orange.mercadolivre.ml.repository.ProdutoRepository;
+import br.com.orange.mercadolivre.ml.shared.EmailManager;
 
 @RestController
-@RequestMapping("/produtos/opiniao")
-public class AdicionaOpiniaoProdutoController {
+@RequestMapping("/produtos/pergunta")
+public class AdicionaPerguntaProdutoController {
 
 	private ProdutoRepository produtoRepository;
 
-	private OpiniaoProdutoRepository opiniaoProdutoRepository;
+	private PerguntaRepository perguntaRepository;
 
-	public AdicionaOpiniaoProdutoController(ProdutoRepository produtoRepository,
-			OpiniaoProdutoRepository opiniaoProdutoRepository) {
+	private EmailManager emailManager;
+
+	public AdicionaPerguntaProdutoController(ProdutoRepository produtoRepository, PerguntaRepository perguntaRepository,
+			EmailManager emailManager) {
 		this.produtoRepository = produtoRepository;
-		this.opiniaoProdutoRepository = opiniaoProdutoRepository;
+		this.perguntaRepository = perguntaRepository;
+		this.emailManager = emailManager;
 	}
 
 	@PostMapping("/{id}")
-	public ResponseEntity<?> adicionarOpiniao(@PathVariable("id") Long idProduto,
-			@RequestBody @Valid NovaOpiniaoProdutoRequest novaOpinaoProdutoRequest,
+	public ResponseEntity<?> adicionarPergunta(@PathVariable("id") Long idProduto,
+			@RequestBody @Valid NovaPerguntaProdutoRequest novaPerguntaProdutoRequest,
 			@AuthenticationPrincipal UsuarioAutenticado usuarioAutenticado) {
 
 		Optional<Produto> optionalProduto = produtoRepository.findById(idProduto);
 		Assert.isTrue(!optionalProduto.isEmpty(), "Produto Não Encontrado");
 
-		OpiniaoProduto opiniao = novaOpinaoProdutoRequest.toEntity(usuarioAutenticado.getUsuario(), optionalProduto.get());
+		Pergunta pergunta = novaPerguntaProdutoRequest.toEntity(optionalProduto.get(), usuarioAutenticado.getUsuario());
 
-		opiniaoProdutoRepository.save(opiniao);
+		perguntaRepository.save(pergunta);
+
+		emailManager.EnviarEmailParaVendedor(pergunta.toResponse(usuarioAutenticado.getUsuario().getLogin()));
 
 		return ResponseEntity.ok().build();
 	}
+
 }
