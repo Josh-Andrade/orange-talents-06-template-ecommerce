@@ -126,6 +126,10 @@ public class Produto {
 		return valor;
 	}
 
+	public Integer getQuantidade() {
+		return quantidade;
+	}
+
 	public Double getMediaNotas() {
 		Double nota = 0.0;
 		for (OpiniaoProduto opiniao : opinioes) {
@@ -159,13 +163,18 @@ public class Produto {
 	public CategoriaDetalheResponse getDetalheCategorias() {
 		return carregarCategoriasMae(categoria);
 	}
-	
+
 	private CategoriaDetalheResponse carregarCategoriasMae(Categoria categoria) {
-		if(Objects.isNull(categoria)) {
+		if (Objects.isNull(categoria)) {
 			return null;
 		}
 		CategoriaDetalheResponse categoriaDetalhe = new CategoriaDetalheResponse(categoria.getNome());
 		categoriaDetalhe.setCategoriaMae(carregarCategoriasMae(categoria.getCategoria()));
 		return categoriaDetalhe;
+	}
+
+	public void abaterEstoque(Integer quantidade) {
+		Assert.isTrue(this.quantidade >= quantidade, "O produto informado não possui em estoque a quantidade solicitada");
+		this.quantidade -= quantidade;
 	}
 }

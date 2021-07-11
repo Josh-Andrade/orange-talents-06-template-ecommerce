@@ -54,7 +54,7 @@ public class AdicionaPerguntaProdutoController {
 
 		perguntaRepository.save(pergunta);
 
-		emailManager.EnviarEmailParaVendedor(pergunta.toResponse(usuarioRepository.findEmailById(optionalProduto.get().getUsuario().getId())));
+		emailManager.enviarEmailPerguntaParaVendedor(pergunta.toResponse(usuarioRepository.findEmailById(optionalProduto.get().getUsuario().getId())));
 
 		return ResponseEntity.ok().build();
 	}

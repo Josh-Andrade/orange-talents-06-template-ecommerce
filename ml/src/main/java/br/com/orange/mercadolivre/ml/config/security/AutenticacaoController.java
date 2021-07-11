@@ -1,6 +1,5 @@
 package br.com.orange.mercadolivre.ml.config.security;
 
-import javax.naming.AuthenticationException;
 import javax.validation.Valid;
 
 import org.springframework.http.ResponseEntity;
