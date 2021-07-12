@@ -4,7 +4,8 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 public enum GatewayPagamento {
 
-	PAYPAL("paypal.com", "/retorno-paypal/{id}"), PAGSEGURO("pagseguro.com", "/retorno-pagseguro/{id}");
+	PAYPAL("paypal.com", "/retorno-paypal/{id}"),
+	PAGSEGURO("pagseguro.com", "/retorno-pagseguro/{id}");
 
 	private String url;
 	private String urlRetorno;
@@ -18,7 +19,10 @@ public enum GatewayPagamento {
 		return url;
 	}
 
-	public String retornaUrlGateway(Long idCompra, GatewayPagamento gatewayPagamento, UriComponentsBuilder uriComponentsBuilder) {
-		return gatewayPagamento.getUrl() + "?buyerId=" + idCompra + "&redirectUrl=" + uriComponentsBuilder.path(urlRetorno).buildAndExpand(idCompra).toString();
+	public String retornaUrlGateway(Long idCompra, GatewayPagamento gatewayPagamento,
+			UriComponentsBuilder uriComponentsBuilder) {
+		return gatewayPagamento.getUrl() + "?buyerId=" + idCompra + "&redirectUrl="
+				+ uriComponentsBuilder.path(urlRetorno).buildAndExpand(idCompra).toString();
 	}
+
 }
