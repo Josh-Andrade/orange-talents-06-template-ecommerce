@@ -131,11 +131,7 @@ public class Produto {
 	}
 
 	public Double getMediaNotas() {
-		Double nota = 0.0;
-		for (OpiniaoProduto opiniao : opinioes) {
-			nota += opiniao.getNota();
-		}
-		return nota / getTotalNotas();
+		return opinioes.stream().mapToDouble(o -> o.getNota()).average().getAsDouble();
 	}
 
 	public Integer getTotalNotas() {
