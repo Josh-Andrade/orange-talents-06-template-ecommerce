@@ -1,3 +1,4 @@
+
 package br.com.orange.mercadolivre.ml.compra;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -9,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.context.annotation.Profile;
 
 import br.com.orange.mercadolivre.ml.controller.request.NovaCompraRequest;
 import br.com.orange.mercadolivre.ml.domain.Compra;
@@ -20,7 +22,9 @@ import br.com.orange.mercadolivre.ml.repository.ProdutoRepository;
 import br.com.orange.mercadolivre.ml.repository.UsuarioRepository;
 
 @DataJpaTest
+
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@Profile("test")
 public class CompraTest {
 
 	@Autowired

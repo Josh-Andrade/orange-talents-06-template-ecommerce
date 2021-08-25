@@ -37,8 +37,8 @@ public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
 				.permitAll().antMatchers(HttpMethod.POST, "/retorno-pagseguro/*").permitAll()
 				.antMatchers(HttpMethod.POST, "/retorno-paypal/*").permitAll()
 				.antMatchers(HttpMethod.POST, "/nota-fiscal").permitAll().antMatchers(HttpMethod.POST, "/ranking")
-				.permitAll().anyRequest().authenticated().and().csrf().disable().sessionManagement()
-				.sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+				.permitAll().antMatchers("/actuator/**").permitAll().anyRequest().authenticated().and()
+				.csrf().disable().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
 				.addFilterBefore(new UsuarioAutenticacaoFilter(usuarioService, tokenManager),
 						UsernamePasswordAuthenticationFilter.class);
 	}

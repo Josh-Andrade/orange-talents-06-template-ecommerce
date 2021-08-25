@@ -35,7 +35,7 @@ public class AutenticacaoController {
 			return ResponseEntity.ok(tokenGerado);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
-			return ResponseEntity.badRequest().build();
+			return ResponseEntity.badRequest().body("Usuário não encontrado");
 		}
 		
 		

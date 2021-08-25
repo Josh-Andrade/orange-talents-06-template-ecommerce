@@ -14,15 +14,15 @@ import br.com.orange.mercadolivre.ml.repository.UsuarioRepository;
 @RestController
 @RequestMapping("/usuario")
 public class UsuarioController {
-	
+
 	private UsuarioRepository usuarioRepository;
 
 	public UsuarioController(UsuarioRepository usuarioRepository) {
 		this.usuarioRepository = usuarioRepository;
 	}
-	
+
 	@PostMapping
-	public ResponseEntity<?> cadastrar(@Valid @RequestBody NovoUsuarioRequest novoUsuarioRequest){
+	public ResponseEntity<?> cadastrar(@Valid @RequestBody NovoUsuarioRequest novoUsuarioRequest) {
 		usuarioRepository.save(novoUsuarioRequest.toDomain());
 		return ResponseEntity.ok().build();
 	}
