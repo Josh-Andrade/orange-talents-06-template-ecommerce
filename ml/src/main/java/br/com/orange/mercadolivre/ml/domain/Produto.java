@@ -173,4 +173,8 @@ public class Produto {
 		Assert.isTrue(this.quantidade >= quantidade, "O produto informado não possui em estoque a quantidade solicitada");
 		this.quantidade -= quantidade;
 	}
+	
+	public Long getId() {
+		return this.id;
+	}
 }

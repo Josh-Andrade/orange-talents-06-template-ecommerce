@@ -103,6 +103,16 @@
 			<artifactId>opentracing-spring-jaeger-cloud-starter</artifactId>
 			<version>3.2.2</version>
 		</dependency>
+		<dependency>
+    		<groupId>com.h2database</groupId>
+    		<artifactId>h2</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.rest-assured</groupId>
+			<artifactId>spring-mock-mvc</artifactId>
+			<scope>test</scope>
+		</dependency>
+		
 	</dependencies>
 
 	<build>
